@@ -1,0 +1,163 @@
+From 5ff84ac7dba77dc6d53978805df00c01e3292ea8 Mon Sep 17 00:00:00 2001
+From: hluwa <hluwa888@gmail.com>
+Date: Sat, 31 Oct 2020 15:57:00 +0800
+Subject: [PATCH] anti-anti-frida patch
+
+---
+ lib/interfaces/session.vala       |  6 +++---
+ src/anti-anti-frida.py            | 22 ++++++++++++++++++++++
+ src/embed-agent.sh                | 12 ++++++++++--
+ src/linux/linux-host-session.vala |  6 +++---
+ src/meson.build                   |  1 +
+ 5 files changed, 39 insertions(+), 8 deletions(-)
+ create mode 100644 src/anti-anti-frida.py
+
+diff --git a/lib/interfaces/session.vala b/lib/interfaces/session.vala
+index cb4c99b6..7d4c77dc 100644
+--- a/lib/interfaces/session.vala
++++ b/lib/interfaces/session.vala
+@@ -869,7 +869,7 @@ namespace Frida {
+ 			var request = new Json.Builder ();
+ 			request
+ 				.begin_array ()
+-				.add_string_value ("frida:rpc")
++				.add_string_value ((string) GLib.Base64.decode("ZnJpZGE6cnBj"))
+ 				.add_string_value (request_id)
+ 				.add_string_value ("call")
+ 				.add_string_value (method)
+@@ -922,7 +922,7 @@ namespace Frida {
+ 		}
+ 
+ 		public bool try_handle_message (string raw_message) {
+-			if (raw_message.index_of ("\"frida:rpc\"") == -1)
++			if (raw_message.index_of ("\"" + (string) GLib.Base64.decode("ZnJpZGE6cnBj") + "\"") == -1)
+ 				return false;
+ 
+ 			var parser = new Json.Parser ();
+@@ -951,7 +951,7 @@ namespace Frida {
+ 				return false;
+ 
+ 			string? type = rpc_message.get_element (0).get_string ();
+-			if (type == null || type != "frida:rpc")
++			if (type == null || type != (string) GLib.Base64.decode("ZnJpZGE6cnBj"))
+ 				return false;
+ 
+ 			var request_id_value = rpc_message.get_element (1);
+diff --git a/src/anti-anti-frida.py b/src/anti-anti-frida.py
+new file mode 100644
+index 00000000..1cd990c0
+--- /dev/null
++++ b/src/anti-anti-frida.py
+@@ -0,0 +1,22 @@
++import lief
++import sys
++import random
++
++if __name__ == "__main__":
++    input_file = sys.argv[1]
++    random_name = "".join(random.sample("ABCDEFGHIJKLMNO", 5))
++    print(f"[*] Patch frida name to {random_name}")
++
++    binary = lief.parse(input_file)
++
++    for symbol in binary.symbols:
++        if symbol.name == "frida_agent_main":
++            symbol.name = "main"
++        
++        if "frida" in symbol.name:
++            symbol.name = symbol.name.replace("frida", random_name)
++
++        if "FRIDA" in symbol.name:
++            symbol.name = symbol.name.replace("FRIDA", random_name)
++    
++    binary.write(input_file)
+\ No newline at end of file
+diff --git a/src/embed-agent.sh b/src/embed-agent.sh
+index 460d2aae..7d366706 100755
+--- a/src/embed-agent.sh
++++ b/src/embed-agent.sh
+@@ -8,6 +8,7 @@ resource_compiler="$5"
+ resource_config="$6"
+ strip_binary="$7"
+ strip_enabled="$8"
++custom_script="$9"
+ 
+ priv_dir="$output_dir/frida-agent@emb"
+ 
+@@ -91,7 +92,6 @@ case $host_os in
+     ;;
+   *)
+     embedded_agents=()
+-
+     embedded_agent="$priv_dir/frida-agent-64.so"
+     if [ -f "$agent_modern" ]; then
+ 
+@@ -103,20 +103,28 @@ case $host_os in
+     else
+       touch "$embedded_agent"
+     fi
++    if [ -f "$custom_script" ]; then
++            python3 "$custom_script" "$embedded_agent"
++    fi
+     embedded_agents+=("$embedded_agent")
+-
++    
+     embedded_agent="$priv_dir/frida-agent-32.so"
+     if [ -f "$agent_legacy" ]; then
+       cp "$agent_legacy" "$embedded_agent" || exit 1
+ 
+       if [ "$strip_enabled" = "true" ]; then
+         "$strip_binary" "$embedded_agent" || exit 1
++
+       fi
+     else
+       touch "$embedded_agent"
+     fi
++    if [ -f "$custom_script" ]; then
++      python3 "$custom_script" "$embedded_agent"
++    fi
+     embedded_agents+=("$embedded_agent")
+ 
++
+     exec "$resource_compiler" --toolchain=gnu -c "$resource_config" -o "$output_dir/frida-data-agent" "${embedded_agents[@]}"
+     ;;
+ esac
+diff --git a/src/linux/linux-host-session.vala b/src/linux/linux-host-session.vala
+index 8c48b05a..ed9fd3f9 100644
+--- a/src/linux/linux-host-session.vala
++++ b/src/linux/linux-host-session.vala
+@@ -282,8 +282,8 @@ namespace Frida {
+ 			});
+ 
+ 			var linjector = injector as Linjector;
+-			var id = yield linjector.inject_library_resource (pid, agent_resource, "frida_agent_main", t.remote_address,
+-				cancellable);
++			var id = yield linjector.inject_library_resource (pid, agent_resource, "main", t.remote_address,
++cancellable);
+ 			injectee_by_pid[pid] = id;
+ 
+ 			transport = t;
+@@ -342,7 +342,7 @@ namespace Frida {
+ 			if (agent_resource == null) {
+ 				var blob32 = Frida.Data.Agent.get_frida_agent_32_so_blob ();
+ 				var blob64 = Frida.Data.Agent.get_frida_agent_64_so_blob ();
+-				agent_resource = new AgentResource ("frida-agent-%u.so",
++				agent_resource = new AgentResource (GLib.Uuid.string_random() + "-%u.so",
+ 					new MemoryInputStream.from_data (blob32.data, null),
+ 					new MemoryInputStream.from_data (blob64.data, null),
+ 					AgentMode.INSTANCED,
+diff --git a/src/meson.build b/src/meson.build
+index e03fccd6..4a8ba62a 100644
+--- a/src/meson.build
++++ b/src/meson.build
+@@ -271,6 +271,7 @@ agent_data = custom_target('frida-data-agent',
+     '@INPUT0@',
+     meson.get_cross_binary('strip', 'strip'),
+     get_option('strip').to_string(),
++    files('anti-anti-frida.py'),
+   ],
+ )
+ 
+-- 
+2.28.0
+
