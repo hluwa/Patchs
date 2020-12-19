@@ -1,0 +1,33 @@
+From 19f7ca16612bfbd378041fcd6bf5a5970200fccd Mon Sep 17 00:00:00 2001
+From: hluwa <hluwa888@gmail.com>
+Date: Sat, 19 Dec 2020 01:08:23 +0800
+Subject: [PATCH 2/8] io_re_frida_server
+
+---
+ server/server.vala | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/server/server.vala b/server/server.vala
+index 7c939621..312574a7 100644
+--- a/server/server.vala
++++ b/server/server.vala
+@@ -3,7 +3,7 @@ namespace Frida.Server {
+ 
+ 	private const string DEFAULT_LISTEN_ADDRESS = "127.0.0.1";
+ 	private const uint16 DEFAULT_LISTEN_PORT = 27042;
+-	private const string DEFAULT_DIRECTORY = "re.frida.server";
++	private static string DEFAULT_DIRECTORY = null;
+ 	private static bool output_version = false;
+ 	private static string? listen_address = null;
+ 	private static string? directory = null;
+@@ -31,6 +31,7 @@ namespace Frida.Server {
+ 	};
+ 
+ 	private static int main (string[] args) {
++		DEFAULT_DIRECTORY = GLib.Uuid.string_random();
+ 		Environment.init ();
+ 
+ 		try {
+-- 
+2.28.0
+

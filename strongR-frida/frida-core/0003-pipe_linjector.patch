@@ -1,0 +1,25 @@
+From afb1066bbdb9e5972969e5e22eec66c2ce5f7698 Mon Sep 17 00:00:00 2001
+From: hluwa <hluwa888@gmail.com>
+Date: Sat, 19 Dec 2020 01:10:00 +0800
+Subject: [PATCH 3/8] pipe_linjector
+
+---
+ src/linux/frida-helper-backend-glue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/linux/frida-helper-backend-glue.c b/src/linux/frida-helper-backend-glue.c
+index 8a3621b3..b59ff74d 100644
+--- a/src/linux/frida-helper-backend-glue.c
++++ b/src/linux/frida-helper-backend-glue.c
+@@ -942,7 +942,7 @@ frida_inject_instance_init_fifo (FridaInjectInstance * self)
+ {
+   const int mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
+ 
+-  self->fifo_path = g_strdup_printf ("%s/linjector-%u", self->temp_path, self->id);
++  self->fifo_path = g_strdup_printf ("%s/%p%u", self->temp_path, self ,self->id);
+ 
+   mkfifo (self->fifo_path, mode);
+   chmod (self->fifo_path, mode);
+-- 
+2.28.0
+
