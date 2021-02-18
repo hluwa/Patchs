@@ -1,14 +1,14 @@
-From 07aa34f24a98527ec1174ff08ca46a0f9fbbe1b5 Mon Sep 17 00:00:00 2001
+From 69671f12d82871c12ab96d4ecf36899d2d9832fc Mon Sep 17 00:00:00 2001
 From: hluwa <hluwa888@gmail.com>
-Date: Sat, 19 Dec 2020 01:12:14 +0800
-Subject: [PATCH 4/8] io_frida_agent_so
+Date: Thu, 18 Feb 2021 20:17:25 +0800
+Subject: [PATCH 4/8] strongR-frida: io_frida_agent_so
 
 ---
  src/linux/linux-host-session.vala | 7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/src/linux/linux-host-session.vala b/src/linux/linux-host-session.vala
-index 40964ce5..2878c558 100644
+index d51297b9..a595b48b 100644
 --- a/src/linux/linux-host-session.vala
 +++ b/src/linux/linux-host-session.vala
 @@ -118,12 +118,13 @@ namespace Frida {

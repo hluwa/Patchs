@@ -1,7 +1,7 @@
-From e88231480c637490daec7bc56fb335191e3469c9 Mon Sep 17 00:00:00 2001
+From 1be9f071b6d4e260cd0916c1647fde80b337f5f4 Mon Sep 17 00:00:00 2001
 From: hluwa <hluwa888@gmail.com>
-Date: Sat, 19 Dec 2020 01:56:15 +0800
-Subject: [PATCH 8/8] protocol_unexpected_command
+Date: Thu, 18 Feb 2021 20:17:25 +0800
+Subject: [PATCH 8/8] strongR-frida: protocol_unexpected_command
 
 ---
  src/droidy/droidy-client.vala | 2 +-
