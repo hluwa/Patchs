@@ -1,20 +1,19 @@
-From 2a1afbe5ca716ed7bb825b12836e1804dde0bcab Mon Sep 17 00:00:00 2001
+From a4f15502c99291fa058e35b0ab65dacd6ff211a9 Mon Sep 17 00:00:00 2001
 From: hluwa <hluwa888@gmail.com>
-Date: Thu, 18 Feb 2021 20:17:25 +0800
+Date: Thu, 25 Mar 2021 22:47:38 +0800
 Subject: [PATCH 5/8] strongR-frida: symbol_frida_agent_main
 
 ---
  src/agent-container.vala              |  2 +-
  src/anti-anti-frida.py                | 27 +++++++++++++++++++++++++++
- src/darwin/darwin-host-session.vala   |  4 ++--
+ src/darwin/darwin-host-session.vala   |  2 +-
  src/embed-agent.sh                    |  9 +++++++++
  src/linux/linux-host-session.vala     |  2 +-
- src/meson.build                       |  1 +
  src/qnx/qnx-host-session.vala         |  2 +-
  src/windows/windows-host-session.vala |  2 +-
  tests/test-agent.vala                 |  2 +-
  tests/test-injector.vala              |  2 +-
- 10 files changed, 45 insertions(+), 8 deletions(-)
+ 9 files changed, 43 insertions(+), 7 deletions(-)
  create mode 100644 src/anti-anti-frida.py
 
 diff --git a/src/agent-container.vala b/src/agent-container.vala
@@ -64,39 +63,31 @@ index 00000000..d30168d6
 +
 +    binary.write(input_file)
 diff --git a/src/darwin/darwin-host-session.vala b/src/darwin/darwin-host-session.vala
-index 3ff2ae6b..78a4db38 100644
+index 315fcaaa..7448e3cd 100644
 --- a/src/darwin/darwin-host-session.vala
 +++ b/src/darwin/darwin-host-session.vala
-@@ -175,7 +175,7 @@ namespace Frida {
- 			var stream_request = yield helper.open_pipe_stream (pid, cancellable, out remote_address);
+@@ -317,7 +317,7 @@ namespace Frida {
+ 		private async uint inject_agent (uint pid, string remote_address, Cancellable? cancellable) throws Error, IOError {
+ 			uint id;
  
- 			var fruitjector = (Fruitjector) injector;
--			var id = yield fruitjector.inject_library_resource (pid, agent, "frida_agent_main", remote_address, cancellable);
-+			var id = yield fruitjector.inject_library_resource (pid, agent, "main", remote_address, cancellable);
- 			injectee_by_pid[pid] = id;
- 
- 			IOStream stream = yield stream_request.wait_async (cancellable);
-@@ -284,7 +284,7 @@ namespace Frida {
- 			var stream_future = yield helper.open_pipe_stream (pid, cancellable, out remote_address);
- 
- 			var fruitjector = (Fruitjector) injector;
--			var id = yield fruitjector.inject_library_resource (pid, agent, "frida_agent_main", remote_address, cancellable);
-+			var id = yield fruitjector.inject_library_resource (pid, agent, "main", remote_address, cancellable);
- 			injectee_by_pid[pid] = id;
- 
- 			return stream_future;
+-			unowned string entrypoint = "frida_agent_main";
++			unowned string entrypoint = "main";
+ #if HAVE_EMBEDDED_ASSETS
+ 			id = yield fruitjector.inject_library_resource (pid, agent, entrypoint, remote_address, cancellable);
+ #else
 diff --git a/src/embed-agent.sh b/src/embed-agent.sh
-index a4518cdf..f999eb0d 100755
+index 380e8a32..d07f4588 100755
 --- a/src/embed-agent.sh
 +++ b/src/embed-agent.sh
-@@ -1,5 +1,6 @@
- #!/bin/bash
+@@ -9,6 +9,7 @@ host_os="$6"
+ resource_compiler="$7"
+ resource_config="$8"
  
-+custom_script="${@: -1}"
- host_os="$1"
- agent_modern="$2"
- agent_legacy="$3"
-@@ -63,6 +64,10 @@ collect_generic_agent ()
++custom_script="$output_dir/../../../../frida-core/src/anti-anti-frida.py"
+ priv_dir="$output_dir/frida-agent@emb"
+ 
+ case $host_os in
+@@ -30,6 +31,10 @@ collect_generic_agent ()
    else
      touch "$embedded_agent"
    fi
@@ -107,8 +98,8 @@ index a4518cdf..f999eb0d 100755
    embedded_agents+=("$embedded_agent")
  }
  
-@@ -112,6 +117,10 @@ case $host_os in
-       "$strip_binary" "$embedded_agent" || exit 1
+@@ -62,6 +67,10 @@ case $host_os in
+       exit 1
      fi
  
 +    if [ -f "$custom_script" ]; then
@@ -119,37 +110,25 @@ index a4518cdf..f999eb0d 100755
      ;;
    *)
 diff --git a/src/linux/linux-host-session.vala b/src/linux/linux-host-session.vala
-index a595b48b..97d52128 100644
+index 8915007a..00a17dea 100644
 --- a/src/linux/linux-host-session.vala
 +++ b/src/linux/linux-host-session.vala
-@@ -323,7 +323,7 @@ namespace Frida {
- 			});
+@@ -327,7 +327,7 @@ namespace Frida {
+ 			var stream_request = Pipe.open (t.local_address, cancellable);
  
+ 			uint id;
+-			string entrypoint = "frida_agent_main";
++			string entrypoint = "main";
  			var linjector = injector as Linjector;
--			var id = yield linjector.inject_library_resource (pid, agent, "frida_agent_main", t.remote_address, cancellable);
-+			var id = yield linjector.inject_library_resource (pid, agent, "main", t.remote_address, cancellable);
- 			injectee_by_pid[pid] = id;
- 
- 			transport = t;
-diff --git a/src/meson.build b/src/meson.build
-index 23adb00c..b3e57f71 100644
---- a/src/meson.build
-+++ b/src/meson.build
-@@ -275,6 +275,7 @@ agent_data = custom_target('frida-data-agent',
-     '@INPUT0@',
-     meson.get_cross_binary('strip', 'strip'),
-     get_option('strip').to_string(),
-+    files('anti-anti-frida.py'),
-   ],
- )
- 
+ #if HAVE_EMBEDDED_ASSETS
+ 			id = yield linjector.inject_library_resource (pid, agent, entrypoint, t.remote_address, cancellable);
 diff --git a/src/qnx/qnx-host-session.vala b/src/qnx/qnx-host-session.vala
-index 9e2cc2c7..010ff9e0 100644
+index f14e0052..4853e742 100644
 --- a/src/qnx/qnx-host-session.vala
 +++ b/src/qnx/qnx-host-session.vala
-@@ -177,7 +177,7 @@ namespace Frida {
- 				return injectee_by_pid.has_key (pid);
- 			});
+@@ -173,7 +173,7 @@ namespace Frida {
+ 
+ 			var stream_request = Pipe.open (t.local_address, cancellable);
  
 -			var id = yield qinjector.inject_library_resource (pid, agent_desc, "frida_agent_main", t.remote_address,
 +			var id = yield qinjector.inject_library_resource (pid, agent_desc, "main", t.remote_address,
@@ -157,11 +136,11 @@ index 9e2cc2c7..010ff9e0 100644
  			injectee_by_pid[pid] = id;
  
 diff --git a/src/windows/windows-host-session.vala b/src/windows/windows-host-session.vala
-index 9492097d..3b4ba623 100644
+index f0f0a96a..684c6acf 100644
 --- a/src/windows/windows-host-session.vala
 +++ b/src/windows/windows-host-session.vala
-@@ -271,7 +271,7 @@ namespace Frida {
- 			});
+@@ -267,7 +267,7 @@ namespace Frida {
+ 			var stream_request = Pipe.open (t.local_address, cancellable);
  
  			var winjector = injector as Winjector;
 -			var id = yield winjector.inject_library_resource (pid, agent, "frida_agent_main", t.remote_address, cancellable);

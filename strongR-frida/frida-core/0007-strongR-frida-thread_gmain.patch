@@ -1,6 +1,6 @@
-From ebeeab69ba34725f1cd4642d5843b6ad742992e0 Mon Sep 17 00:00:00 2001
+From abca1b1debaf8d4f1dcfd8588fe37a2507fa5e64 Mon Sep 17 00:00:00 2001
 From: hluwa <hluwa888@gmail.com>
-Date: Thu, 18 Feb 2021 20:17:25 +0800
+Date: Thu, 25 Mar 2021 22:47:38 +0800
 Subject: [PATCH 7/8] strongR-frida: thread_gmain
 
 ---
