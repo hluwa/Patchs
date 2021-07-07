@@ -1,6 +1,6 @@
-From edbee4aeaf26acad0fff013521242a9c89348a0e Mon Sep 17 00:00:00 2001
+From 6f5bcf51f9158608475e7553997d0034872d5f2a Mon Sep 17 00:00:00 2001
 From: hluwa <hluwa888@gmail.com>
-Date: Thu, 25 Mar 2021 22:47:38 +0800
+Date: Wed, 7 Jul 2021 18:52:49 +0800
 Subject: [PATCH 8/8] strongR-frida: protocol_unexpected_command
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH 8/8] strongR-frida: protocol_unexpected_command
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/droidy/droidy-client.vala b/src/droidy/droidy-client.vala
-index 00c6fb3d..8efe6e1c 100644
+index 1cb31efd..13d6cf46 100644
 --- a/src/droidy/droidy-client.vala
 +++ b/src/droidy/droidy-client.vala
-@@ -543,7 +543,7 @@ namespace Frida.Droidy {
+@@ -964,7 +964,7 @@ namespace Frida.Droidy {
  						case "OPEN":
  						case "CLSE":
  						case "WRTE":
@@ -21,5 +21,5 @@ index 00c6fb3d..8efe6e1c 100644
  						default:
  							var length = parse_length (command_or_length);
 -- 
-2.28.0
+2.30.2
 

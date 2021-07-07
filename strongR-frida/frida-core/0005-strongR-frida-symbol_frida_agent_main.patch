@@ -1,6 +1,6 @@
-From a4f15502c99291fa058e35b0ab65dacd6ff211a9 Mon Sep 17 00:00:00 2001
+From 9b00a5b73a45df227a59cb688e369345af793b97 Mon Sep 17 00:00:00 2001
 From: hluwa <hluwa888@gmail.com>
-Date: Thu, 25 Mar 2021 22:47:38 +0800
+Date: Wed, 7 Jul 2021 18:52:49 +0800
 Subject: [PATCH 5/8] strongR-frida: symbol_frida_agent_main
 
 ---
@@ -17,7 +17,7 @@ Subject: [PATCH 5/8] strongR-frida: symbol_frida_agent_main
  create mode 100644 src/anti-anti-frida.py
 
 diff --git a/src/agent-container.vala b/src/agent-container.vala
-index fe16e644..04e4eab5 100644
+index 256e5ed7..83f6a3e8 100644
 --- a/src/agent-container.vala
 +++ b/src/agent-container.vala
 @@ -20,7 +20,7 @@ namespace Frida {
@@ -63,10 +63,10 @@ index 00000000..d30168d6
 +
 +    binary.write(input_file)
 diff --git a/src/darwin/darwin-host-session.vala b/src/darwin/darwin-host-session.vala
-index 315fcaaa..7448e3cd 100644
+index d28c356e..f4ce07dc 100644
 --- a/src/darwin/darwin-host-session.vala
 +++ b/src/darwin/darwin-host-session.vala
-@@ -317,7 +317,7 @@ namespace Frida {
+@@ -332,7 +332,7 @@ namespace Frida {
  		private async uint inject_agent (uint pid, string remote_address, Cancellable? cancellable) throws Error, IOError {
  			uint id;
  
@@ -110,10 +110,10 @@ index 380e8a32..d07f4588 100755
      ;;
    *)
 diff --git a/src/linux/linux-host-session.vala b/src/linux/linux-host-session.vala
-index 8915007a..00a17dea 100644
+index 1a68d049..c4f604f0 100644
 --- a/src/linux/linux-host-session.vala
 +++ b/src/linux/linux-host-session.vala
-@@ -327,7 +327,7 @@ namespace Frida {
+@@ -422,7 +422,7 @@ namespace Frida {
  			var stream_request = Pipe.open (t.local_address, cancellable);
  
  			uint id;
@@ -123,10 +123,10 @@ index 8915007a..00a17dea 100644
  #if HAVE_EMBEDDED_ASSETS
  			id = yield linjector.inject_library_resource (pid, agent, entrypoint, t.remote_address, cancellable);
 diff --git a/src/qnx/qnx-host-session.vala b/src/qnx/qnx-host-session.vala
-index f14e0052..4853e742 100644
+index 088c2521..34a37c99 100644
 --- a/src/qnx/qnx-host-session.vala
 +++ b/src/qnx/qnx-host-session.vala
-@@ -173,7 +173,7 @@ namespace Frida {
+@@ -182,7 +182,7 @@ namespace Frida {
  
  			var stream_request = Pipe.open (t.local_address, cancellable);
  
@@ -136,10 +136,10 @@ index f14e0052..4853e742 100644
  			injectee_by_pid[pid] = id;
  
 diff --git a/src/windows/windows-host-session.vala b/src/windows/windows-host-session.vala
-index f0f0a96a..684c6acf 100644
+index 2b1666c7..90b8bce6 100644
 --- a/src/windows/windows-host-session.vala
 +++ b/src/windows/windows-host-session.vala
-@@ -267,7 +267,7 @@ namespace Frida {
+@@ -274,7 +274,7 @@ namespace Frida {
  			var stream_request = Pipe.open (t.local_address, cancellable);
  
  			var winjector = injector as Winjector;
@@ -149,10 +149,10 @@ index f0f0a96a..684c6acf 100644
  
  			transport = t;
 diff --git a/tests/test-agent.vala b/tests/test-agent.vala
-index d264ce1d..17571511 100644
+index 53d8ebf0..deda8744 100644
 --- a/tests/test-agent.vala
 +++ b/tests/test-agent.vala
-@@ -443,7 +443,7 @@ Interceptor.attach(Module.getExportByName('libsystem_kernel.dylib', 'open'), ()
+@@ -444,7 +444,7 @@ Interceptor.attach(Module.getExportByName('libsystem_kernel.dylib', 'open'), ()
  			assert_nonnull (module);
  
  			void * main_func_symbol;
@@ -175,5 +175,5 @@ index 81df3e16..e4fb6730 100644
  				printerr ("\nFAIL: %s\n\n", e.message);
  				assert_not_reached ();
 -- 
-2.28.0
+2.30.2
 

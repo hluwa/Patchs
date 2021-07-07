@@ -1,6 +1,6 @@
-From abca1b1debaf8d4f1dcfd8588fe37a2507fa5e64 Mon Sep 17 00:00:00 2001
+From 20dace69612fd2882f69c07c6e021033d2192b23 Mon Sep 17 00:00:00 2001
 From: hluwa <hluwa888@gmail.com>
-Date: Thu, 25 Mar 2021 22:47:38 +0800
+Date: Wed, 7 Jul 2021 18:52:49 +0800
 Subject: [PATCH 7/8] strongR-frida: thread_gmain
 
 ---
@@ -22,5 +22,5 @@ index b6a8e1aa..bd67c606 100644
 +    print(f"[*] Patch `gmain` to `{random_name}`")
 +    os.system(f"sed -b -i s/gmain/{random_name}/g {input_file}")
 -- 
-2.28.0
+2.30.2
 

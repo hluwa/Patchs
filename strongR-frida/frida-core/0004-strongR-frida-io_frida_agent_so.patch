@@ -1,6 +1,6 @@
-From 918eb202e4de151f077c0e6de98b0303c418bc4e Mon Sep 17 00:00:00 2001
+From 8d752ef9e9aff205587a1e67063c7601c8fe9327 Mon Sep 17 00:00:00 2001
 From: hluwa <hluwa888@gmail.com>
-Date: Thu, 25 Mar 2021 22:47:38 +0800
+Date: Wed, 7 Jul 2021 18:52:49 +0800
 Subject: [PATCH 4/8] strongR-frida: io_frida_agent_so
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH 4/8] strongR-frida: io_frida_agent_so
  1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/src/linux/linux-host-session.vala b/src/linux/linux-host-session.vala
-index c2e08329..8915007a 100644
+index e0963bbc..1a68d049 100644
 --- a/src/linux/linux-host-session.vala
 +++ b/src/linux/linux-host-session.vala
-@@ -119,12 +119,13 @@ namespace Frida {
+@@ -128,12 +128,13 @@ namespace Frida {
  			var blob64 = Frida.Data.Agent.get_frida_agent_64_so_blob ();
  			var emulated_arm = Frida.Data.Agent.get_frida_agent_arm_so_blob ();
  			var emulated_arm64 = Frida.Data.Agent.get_frida_agent_arm64_so_blob ();
@@ -29,5 +29,5 @@ index c2e08329..8915007a 100644
  				AgentMode.INSTANCED,
  				tempdir);
 -- 
-2.28.0
+2.30.2
 

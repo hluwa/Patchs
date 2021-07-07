@@ -1,6 +1,6 @@
-From dbf533efc331d1cab954c45f3c8191aafe467bcf Mon Sep 17 00:00:00 2001
+From 809ffc1c2662a8d0a72e1c14fd2c6c77267db11f Mon Sep 17 00:00:00 2001
 From: hluwa <hluwa888@gmail.com>
-Date: Thu, 25 Mar 2021 22:47:38 +0800
+Date: Wed, 7 Jul 2021 18:52:49 +0800
 Subject: [PATCH 3/8] strongR-frida: pipe_linjector
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH 3/8] strongR-frida: pipe_linjector
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/linux/frida-helper-backend-glue.c b/src/linux/frida-helper-backend-glue.c
-index 8a3621b3..b59ff74d 100644
+index efc82acf..d4d5694f 100644
 --- a/src/linux/frida-helper-backend-glue.c
 +++ b/src/linux/frida-helper-backend-glue.c
-@@ -942,7 +942,7 @@ frida_inject_instance_init_fifo (FridaInjectInstance * self)
+@@ -939,7 +939,7 @@ frida_inject_instance_init_fifo (FridaInjectInstance * self)
  {
    const int mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
  
@@ -21,5 +21,5 @@ index 8a3621b3..b59ff74d 100644
    mkfifo (self->fifo_path, mode);
    chmod (self->fifo_path, mode);
 -- 
-2.28.0
+2.30.2
 

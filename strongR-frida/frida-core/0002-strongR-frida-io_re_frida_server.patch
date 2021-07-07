@@ -1,6 +1,6 @@
-From d623d98fc42cd7dcacb397ecdf5cd3e747647376 Mon Sep 17 00:00:00 2001
+From ef29c923da14365886608816d1794c4965a02a99 Mon Sep 17 00:00:00 2001
 From: hluwa <hluwa888@gmail.com>
-Date: Thu, 25 Mar 2021 22:47:38 +0800
+Date: Wed, 7 Jul 2021 18:52:49 +0800
 Subject: [PATCH 2/8] strongR-frida: io_re_frida_server
 
 ---
@@ -8,19 +8,19 @@ Subject: [PATCH 2/8] strongR-frida: io_re_frida_server
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/server/server.vala b/server/server.vala
-index 0b996e96..8dd710e3 100644
+index e2d1b66d..42c86739 100644
 --- a/server/server.vala
 +++ b/server/server.vala
-@@ -3,7 +3,7 @@ namespace Frida.Server {
+@@ -1,7 +1,7 @@
+ namespace Frida.Server {
+ 	private static Application application;
  
- 	private const string DEFAULT_LISTEN_ADDRESS = "127.0.0.1";
- 	private const uint16 DEFAULT_LISTEN_PORT = 27042;
 -	private const string DEFAULT_DIRECTORY = "re.frida.server";
 +	private static string DEFAULT_DIRECTORY = null;
  	private static bool output_version = false;
  	private static string? listen_address = null;
- 	private static string? directory = null;
-@@ -38,6 +38,7 @@ namespace Frida.Server {
+ 	private static string? certpath = null;
+@@ -50,6 +50,7 @@ namespace Frida.Server {
  	};
  
  	private static int main (string[] args) {
@@ -29,5 +29,5 @@ index 0b996e96..8dd710e3 100644
  
  #if DARWIN
 -- 
-2.28.0
+2.30.2
 
