@@ -1,6 +1,6 @@
-From 9b00a5b73a45df227a59cb688e369345af793b97 Mon Sep 17 00:00:00 2001
+From b83927c4a1368785696f06a4ef7fec1a08d3f43c Mon Sep 17 00:00:00 2001
 From: hluwa <hluwa888@gmail.com>
-Date: Wed, 7 Jul 2021 18:52:49 +0800
+Date: Sat, 14 Aug 2021 20:52:28 +0800
 Subject: [PATCH 5/8] strongR-frida: symbol_frida_agent_main
 
 ---
@@ -110,7 +110,7 @@ index 380e8a32..d07f4588 100755
      ;;
    *)
 diff --git a/src/linux/linux-host-session.vala b/src/linux/linux-host-session.vala
-index 1a68d049..c4f604f0 100644
+index 84ac17b6..8f163540 100644
 --- a/src/linux/linux-host-session.vala
 +++ b/src/linux/linux-host-session.vala
 @@ -422,7 +422,7 @@ namespace Frida {
@@ -149,7 +149,7 @@ index 2b1666c7..90b8bce6 100644
  
  			transport = t;
 diff --git a/tests/test-agent.vala b/tests/test-agent.vala
-index 53d8ebf0..deda8744 100644
+index cb666dbb..66c407f8 100644
 --- a/tests/test-agent.vala
 +++ b/tests/test-agent.vala
 @@ -444,7 +444,7 @@ Interceptor.attach(Module.getExportByName('libsystem_kernel.dylib', 'open'), ()

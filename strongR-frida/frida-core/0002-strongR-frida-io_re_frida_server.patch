@@ -1,6 +1,6 @@
-From ef29c923da14365886608816d1794c4965a02a99 Mon Sep 17 00:00:00 2001
+From 7355710eeecdbd951f7661dec8df6dd9c2a50308 Mon Sep 17 00:00:00 2001
 From: hluwa <hluwa888@gmail.com>
-Date: Wed, 7 Jul 2021 18:52:49 +0800
+Date: Sat, 14 Aug 2021 20:52:28 +0800
 Subject: [PATCH 2/8] strongR-frida: io_re_frida_server
 
 ---
