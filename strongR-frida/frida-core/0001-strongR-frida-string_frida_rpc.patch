@@ -1,6 +1,6 @@
-From 7d45538144b931477bcaf0093e98571c9ff496f9 Mon Sep 17 00:00:00 2001
+From 0874adb5e0e53d90da56e542053b9f14adccfb1a Mon Sep 17 00:00:00 2001
 From: hluwa <hluwa888@gmail.com>
-Date: Sat, 14 Aug 2021 20:52:28 +0800
+Date: Mon, 16 Aug 2021 10:55:11 +0800
 Subject: [PATCH 1/8] strongR-frida: string_frida_rpc
 
 ---

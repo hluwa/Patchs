@@ -1,6 +1,6 @@
-From 6778651c9f1d2d213eac6aeef47dc4cd17095953 Mon Sep 17 00:00:00 2001
+From 3f729d795063022a7136139c78fc3788d091c158 Mon Sep 17 00:00:00 2001
 From: hluwa <hluwa888@gmail.com>
-Date: Sat, 14 Aug 2021 20:52:28 +0800
+Date: Mon, 16 Aug 2021 10:55:11 +0800
 Subject: [PATCH 6/8] strongR-frida: thread_gum_js_loop
 
 ---
